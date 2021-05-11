@@ -1,0 +1,27 @@
+﻿@{
+	ViewData["Title"] = "Создание обращения";
+}
+
+@model ReportViewModel
+
+<h1 class="mb-3">@ViewData["Title"]</h1>
+
+<form asp-area="" asp-action="Create" asp-controller="Report">
+	<div class="form-row">
+		<div class="form-group col-md-6">
+			<label asp-for="FullName"></label>
+			<input class="form-control" asp-for="FullName">
+		</div>
+		<div class="form-group col-md-6">
+			<label asp-for="Phone"></label>
+			<input class="form-control" asp-for="Phone">
+		</div>
+	</div>
+
+	<div class="form-group">
+		<label asp-for="Text"></label>
+		<textarea class="form-control" asp-for="Text"></textarea>
+	</div>
+
+	<input class="btn btn-secondary mt-2" type="submit" value="Создать" />
+</form>

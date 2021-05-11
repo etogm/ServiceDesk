@@ -1,0 +1,14 @@
+﻿@model int
+
+@if (Model == 0)
+{
+    <span class="btn bg-warning btn-sm text-white">Зарегистрировано</span>
+}
+else if (Model == 1)
+{
+    <span class="btn bg-success btn-sm text-white">Исполнено</span>
+}
+else
+{
+    <span class="btn bg-danger btn-sm text-white">Не исполнено</span>
+}

@@ -1,8 +1,29 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+	ViewData["Title"] = "Главная страница";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+@model LoginViewModel
+
+@if (User.Identity.IsAuthenticated)
+{
+	<div class="text-center">
+		<h1 class="display-4">Авторизован, как <strong>@User.Identity.Name</strong></h1>
+		<span>Перейти в раздел в <a asp-area="" asp-action="Index" asp-controller="Report" asp-route-id="">Обращения</a></span>
+	</div>
+
+}
+else
+{
+	<div class="sign-in text-center">
+		<form class="form-signin" asp-area="" asp-action="Index" asp-controller="Home">
+			<img class="mb-4" src="https://getbootstrap.com/docs/4.0/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
+			<h1 class="h3 mb-3 font-weight-normal">Авторизация</h1>
+			<label asp-for="Login" class="sr-only"></label>
+			<input asp-for="Login" class="form-control">
+			<label asp-for="Password" class="sr-only"></label>
+			<input asp-for="Password" class="form-control">
+
+			<button class="btn btn-lg btn-dark btn-block" type="submit">Войти</button>
+		</form>
+	</div>
+}

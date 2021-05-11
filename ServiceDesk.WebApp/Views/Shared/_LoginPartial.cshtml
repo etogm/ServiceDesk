@@ -1,0 +1,23 @@
+﻿@if (User.Identity.IsAuthenticated)
+{
+    <nav class="my-2 my-md-0 mr-md-3">
+		@if (User.IsInRole("Administrator"))
+        {
+            <a class="p-2 text-white" asp-area="" asp-action="Index" asp-controller="AdminPanel">Админ. панель</a>
+        }
+		<a class="p-2 text-white" asp-area="" asp-action="Index" asp-controller="Report" asp-route-id="">Обращения</a>
+	</nav>
+
+    <form asp-area="" asp-controller="Home" asp-action="Logout">
+		<div class="btn-group">
+			<button type="button" class="btn btn-link text-white">Авторизован, как @User.Identity.Name</button>
+			<button type="button" class="btn btn-link text-white dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				<span class="sr-only">Toggle Dropdown</span>
+			</button>
+			<div class="dropdown-menu">
+				<div class="dropdown-divider"></div>
+				<input type="submit" class="dropdown-item" value="Выйти" />
+			</div>
+		</div>
+	</form>
+}

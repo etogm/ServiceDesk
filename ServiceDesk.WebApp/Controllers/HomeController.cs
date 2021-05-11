@@ -1,37 +1,48 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using ServiceDesk.WebApp.Models;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace ServiceDesk.WebApp.Controllers
+﻿namespace ServiceDesk.WebApp.Controllers
 {
+    using System.Threading.Tasks;
+
+    using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Identity;
+    using Microsoft.AspNetCore.Mvc;
+
+    using ServiceDesk.WebApp.Models;
+
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly SignInManager<IdentityUser> signInManager;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(SignInManager<IdentityUser> signInManager) => this.signInManager = signInManager;
+
+        public IActionResult Index() => View(new LoginViewModel());
+
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<IActionResult> Index(LoginViewModel model)
         {
-            _logger = logger;
+            if (!ModelState.IsValid)
+                return View(model);
+
+            var result = await signInManager.PasswordSignInAsync(model.Login, model.Password, true, false);
+
+            if (result.Succeeded)
+                return RedirectToAction("Index", "Home");
+
+            ModelState.AddModelError(string.Empty, "Неверный пароль или логин");
+
+            return View(model);
         }
 
-        public IActionResult Index()
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> Logout()
         {
-            return View();
+            await signInManager.SignOutAsync();
+
+            return RedirectToAction("Index", "Home");
         }
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
+        [Authorize]
+        public IActionResult Privacy() => View();
     }
 }
